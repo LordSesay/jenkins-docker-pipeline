@@ -13,12 +13,6 @@ pipeline {
     }
     
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/LordSesay/jenkins-docker-pipeline.git'
-            }
-        }
-        
         stage('Build') {
             steps {
                 script {
