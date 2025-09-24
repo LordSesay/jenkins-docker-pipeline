@@ -16,9 +16,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        def image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
-                    }
+                    def image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
                 }
             }
         }
