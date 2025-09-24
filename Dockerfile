@@ -1,4 +1,5 @@
-FROM node:18-alpine
+FROM alpine:latest
+RUN apk add --no-cache nodejs npm
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
