@@ -15,7 +15,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-pat', url: 'https://github.com/LordSesay/jenkins-docker-pipeline.git'
+                git branch: 'main', credentialsId: 'github-pat', url: 'https://github.com/LordSesay/jenkins-docker-pipeline.git'
             }
         }
         
