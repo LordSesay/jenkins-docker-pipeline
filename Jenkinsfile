@@ -16,7 +16,9 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    def image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
+                        def image = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
+                    }
                 }
             }
         }
@@ -24,9 +26,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Run tests by executing commands in the container
-                    sh "docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} echo 'Running unit tests...'"
-                    sh "docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} echo 'Tests completed successfully!'"
+                    // Run tests by executing npm test in the container
+                    sh "docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} npm test"
                 }
             }
         }
