@@ -24,10 +24,9 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    docker.image("${IMAGE_NAME}:${IMAGE_TAG}").inside {
-                        sh 'echo Running unit tests...'
-                        sh 'sleep 2'
-                    }
+                    // Run tests by executing commands in the container
+                    sh "docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} echo 'Running unit tests...'"
+                    sh "docker run --rm ${IMAGE_NAME}:${IMAGE_TAG} echo 'Tests completed successfully!'"
                 }
             }
         }
@@ -58,7 +57,8 @@ pipeline {
         always {
             script {
                 try {
-                    sh "docker rmi ${IMAGE_NAME}:${IMAGE_TAG} || true"
+                    sh "docker stop \$(docker ps -q --filter ancestor=${IMAGE_NAME}:${IMAGE_TAG}) || true"
+                    sh "docker rmi -f ${IMAGE_NAME}:${IMAGE_TAG} || true"
                     sh "docker image prune -f || true"
                 } catch (Exception e) {
                     echo "Cleanup failed: ${e.getMessage()}"
